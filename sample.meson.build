@@ -1,0 +1,82 @@
+project('cppgamearch', 'cpp',
+  version : '0.1.0',
+  default_options : ['cpp_std=c++23', 'warning_level=3'])
+
+# Note: Meson auto-detects Homebrew LLVM if clang++ is first in PATH.
+# To force it like your CMake script, use a native file or:
+# CXX=/opt/homebrew/opt/llvm/bin/clang++ meson setup builddir
+
+# 1. Global warning flags (Meson approach: check support first)
+cpp = meson.get_compiler('cpp')
+warning_flags = [
+  '-Wall', '-Wextra', '-Wpedantic', '-Wconversion', '-Wsign-conversion'
+]
+add_project_arguments(cpp.get_supported_arguments(warning_flags), language: 'cpp')
+
+# 2. Global include directory
+inc = include_directories('include')
+
+# 3. Dependencies
+sdl3_dep = dependency('SDL3', method : 'config')  # or fallback to pkg-config
+
+# Apple frameworks (Meson has a dedicated dependency type)
+apple_deps = []
+if host_machine.system() == 'darwin'
+  apple_deps = [
+    dependency('appleframeworks', modules : ['Metal', 'QuartzCore', 'Foundation'])
+  ]
+endif
+
+# Reusable Apple + SDL3 libs for justsdl3 variants
+metal_libs = [sdl3_dep] + apple_deps
+
+# --- Briefly demos ---
+executable('enumerator', 'briefly/enumerator.cpp',
+  include_directories : inc)
+
+# --- Apps ---
+executable('pacman', 'apps/pacman/main.cpp',
+  include_directories : inc,
+  dependencies : sdl3_dep)
+
+executable('tetris', 'apps/tetris/main.cpp',
+  include_directories : inc,
+  dependencies : sdl3_dep)
+
+executable('gameloopclass', 'apps/gameloopclass/main.cpp',
+  include_directories : inc)
+
+executable('chrspaceinvaders', 'apps/chrspaceinvaders/main.cpp',
+  include_directories : inc)
+
+executable('sdl3window', 'apps/sdl3window/main.cpp',
+  include_directories : inc,
+  dependencies : sdl3_dep)
+
+executable('justsdl3', 'apps/justsdl3/main.cpp',
+  include_directories : inc,
+  dependencies : metal_libs)
+
+executable('justsdl3-refactored', 'apps/justsdl3/main-refactored.cpp',
+  include_directories : inc,
+  dependencies : metal_libs)
+
+executable('shaderless', 'apps/justsdl3/shaderless.cpp',
+  include_directories : inc,
+  dependencies : metal_libs)
+
+executable('shaderless-r1', 'apps/justsdl3/shaderless-r1.cpp',
+  include_directories : inc,
+  dependencies : metal_libs)
+
+# metal-cpp headers are treated as SYSTEM includes in CMake;
+# Meson uses is_system : true on include_directories
+metal_cpp_inc = include_directories('third_party/metal-cpp', is_system : true)
+
+executable('sdl3metalwindow', 'apps/sdl3metalwindow/main.cpp',
+  include_directories : [inc, metal_cpp_inc],
+  dependencies : metal_libs)
+
+executable('darkbluewindow', 'apps/darkbluewindow/main.cpp',
+  include_directories : [inc, metal_cpp_inc],
+  dependencies : metal_libs)

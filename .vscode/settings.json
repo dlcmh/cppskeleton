@@ -1,0 +1,57 @@
+{
+    "workbench.startupEditor": "none",
+    "chat.disableAIFeatures": false, // 1. Keep the global AI kill switch OFF
+    "github.copilot.chat.enabled": false, // 2. Disable the Copilot Chat interface
+    // 3. Enable inline suggestions (ghost text)
+    "editor.inlineSuggest.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "github.copilot.nextEditSuggestions.enabled": false, // 4. (Optional) Disable "Next Edit Suggestions" for a simpler experience
+    "git.openRepositoryInParentFolders": "never",
+    "explorer.confirmDelete": false,
+    "clangd.path": "/opt/homebrew/opt/llvm/bin/clangd",
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/builddir",
+        "--query-driver=/opt/homebrew/opt/llvm/bin/clang++",
+        "--clang-tidy"
+    ],
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "mesonbuild.configureOnOpen": false,
+    "editor.formatOnSave": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.formatOnSave": true
+    },
+    "[c]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.formatOnSave": true
+    },
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+        }
+    },
+    "ruff.configuration": {
+        "lint": {
+            "unfixable": [
+                "F401" // Keep the warning, but never auto-remove unused imports
+            ]
+        }
+    },
+    "editor.rulers": [
+        80
+    ],
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapIndicator": true,
+    "editor.minimap.enabled": false
+}

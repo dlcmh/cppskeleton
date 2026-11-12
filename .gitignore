@@ -1,0 +1,11 @@
+# ---- Meson ----
+builddir/
+
+# Wrangler
+.wrangler/
+
+# Zensical default build output directory
+site/
+
+# ---- macOS System Files ----
+.DS_Store

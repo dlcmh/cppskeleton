@@ -1,0 +1,7 @@
+cask "visual-studio-code"
+brew "llvm"
+brew "meson"
+brew "ninja"
+brew "ccache"
+brew "pkg-config"
+brew "just"
